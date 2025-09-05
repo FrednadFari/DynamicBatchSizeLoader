@@ -58,7 +58,7 @@ This means:\
 - 60--80% → batch size 256\
 - 80--100% → batch size 512
 
-### 3. Use in your training loop
+### 3. Example (PyTorch)
 
 ``` python
 import torch
