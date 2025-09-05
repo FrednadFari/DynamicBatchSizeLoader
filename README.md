@@ -37,7 +37,7 @@ No extra dependencies required beyond PyTorch / TensorFlow.
 ### 1. Import and initialize
 
 ``` python
-from dynamic_batch_loader import DynamicBatchSizeLoader
+from dynamicbatchsizeloader import DynamicBatchSizeLoader
 
 loader = DynamicBatchSizeLoader(framework='pytorch')  # or 'tensorflow'
 ```
@@ -61,9 +61,31 @@ This means:\
 ### 3. Use in your training loop
 
 ``` python
-for progress, batch in enumerate(dataset):
-    bs = loader.get_batch_size_for_progress(progress / len(dataset) * 100)
-    # apply bs to your DataLoader / tf.data pipeline
+import torch
+from torch.utils.data import DataLoader, TensorDataset
+from dynamicbatchsizeloader import DynamicBatchSizeLoader
+
+# Dummy dataset
+data = torch.arange(100).float().unsqueeze(1)
+dataset = TensorDataset(data)
+
+# Initialize loader
+loader = DynamicBatchSizeLoader(framework='pytorch')
+loader.set_batch_sizes([8, 16, 32, 64], [25, 50, 75, 100])
+
+total = len(dataset)
+progress = 0
+
+for interval in range(4):
+    bs = loader.batch_sizes[interval]
+    dl = DataLoader(dataset, batch_size=bs, shuffle=True)
+
+    print(f"\n▶ Training with batch size {bs}")
+    for batch in dl:
+        progress += len(batch[0])
+        percent_done = (progress / total) * 100
+        # training step here
+        print(f"Progress: {percent_done:.1f}% | Batch size: {bs}")
 ```
 
 ------------------------------------------------------------------------
