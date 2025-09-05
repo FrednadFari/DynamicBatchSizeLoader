@@ -24,8 +24,8 @@ accelerate convergence later.
 Clone the repo:
 
 ``` bash
-git clone https://github.com/FrednadFari/DynamicBatchSizeLoader.git
-cd DynamicBatchSizeLoader
+!git clone https://github.com/FrednadFari/DynamicBatchSizeLoader.git
+%cd DynamicBatchSizeLoader
 ```
 
 No extra dependencies required beyond PyTorch / TensorFlow.
